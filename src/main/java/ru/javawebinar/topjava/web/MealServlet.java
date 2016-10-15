@@ -2,8 +2,8 @@ package ru.javawebinar.topjava.web;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.util.TimeUtil;
 import ru.javawebinar.topjava.web.meal.MealRestController;
@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
 /**
@@ -26,20 +27,13 @@ import java.util.Objects;
 public class MealServlet extends HttpServlet {
     private static final Logger LOG = LoggerFactory.getLogger(MealServlet.class);
 
-    private ConfigurableApplicationContext springContext;
     private MealRestController mealController;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        springContext = new ClassPathXmlApplicationContext("spring/spring-app.xml", "spring/spring-db.xml");
+        WebApplicationContext springContext = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
         mealController = springContext.getBean(MealRestController.class);
-    }
-
-    @Override
-    public void destroy() {
-        springContext.close();
-        super.destroy();
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -65,8 +59,8 @@ public class MealServlet extends HttpServlet {
             LocalDate endDate = TimeUtil.parseLocalDate(resetParam("endDate", request));
             LocalTime startTime = TimeUtil.parseLocalTime(resetParam("startTime", request));
             LocalTime endTime = TimeUtil.parseLocalTime(resetParam("endTime", request));
-            request.setAttribute("mealList", mealController.getBetween(startDate, startTime, endDate, endTime));
-            request.getRequestDispatcher("/mealList.jsp").forward(request, response);
+            request.setAttribute("meals", mealController.getBetween(startDate, startTime, endDate, endTime));
+            request.getRequestDispatcher("/meals.jsp").forward(request, response);
         }
     }
 
@@ -81,8 +75,8 @@ public class MealServlet extends HttpServlet {
 
         if (action == null) {
             LOG.info("getAll");
-            request.setAttribute("mealList", mealController.getAll());
-            request.getRequestDispatcher("/mealList.jsp").forward(request, response);
+            request.setAttribute("meals", mealController.getAll());
+            request.getRequestDispatcher("/meals.jsp").forward(request, response);
 
         } else if ("delete".equals(action)) {
             int id = getId(request);
@@ -91,11 +85,11 @@ public class MealServlet extends HttpServlet {
             response.sendRedirect("meals");
 
         } else if ("create".equals(action) || "update".equals(action)) {
-            final Meal meal = action.equals("create") ?
-                    new Meal(LocalDateTime.now().withNano(0).withSecond(0), "", 1000) :
+            final Meal meal = "create".equals(action) ?
+                    new Meal(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS), "", 1000) :
                     mealController.get(getId(request));
             request.setAttribute("meal", meal);
-            request.getRequestDispatcher("mealEdit.jsp").forward(request, response);
+            request.getRequestDispatcher("meal.jsp").forward(request, response);
         }
     }
 

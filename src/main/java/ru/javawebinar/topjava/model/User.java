@@ -1,28 +1,67 @@
 package ru.javawebinar.topjava.model;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
 import ru.javawebinar.topjava.util.MealsUtil;
 
+import javax.persistence.*;
+import javax.validation.constraints.Digits;
 import java.util.Date;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Set;
 
 /**
  * User: gkislin
  * Date: 22.08.2014
  */
+@NamedQueries({
+        @NamedQuery(name = User.DELETE, query = "DELETE FROM User u WHERE u.id=:id"),
+        @NamedQuery(name = User.BY_EMAIL, query = "SELECT u FROM User u LEFT JOIN FETCH u.roles WHERE u.email=?1"),
+        @NamedQuery(name = User.ALL_SORTED, query = "SELECT u FROM User u LEFT JOIN FETCH u.roles ORDER BY u.name, u.email"),
+})
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@Entity
+@Table(name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = "email", name = "users_unique_email_idx")})
 public class User extends NamedEntity {
 
-    protected String email;
+    public static final String DELETE = "User.delete";
+    public static final String ALL_SORTED = "User.getAllSorted";
+    public static final String BY_EMAIL = "User.getByEmail";
 
-    protected String password;
+    @Column(name = "email", nullable = false, unique = true)
+    @Email
+    @NotEmpty
+    private String email;
 
-    protected boolean enabled = true;
+    @Column(name = "password", nullable = false)
+    @NotEmpty
+    @Length(min = 5)
+    private String password;
 
-    protected Date registered = new Date();
+    @Column(name = "enabled", nullable = false)
+    private boolean enabled = true;
 
-    protected Set<Role> roles;
+    @Column(name = "registered", columnDefinition = "timestamp default now()")
+    private Date registered = new Date();
 
-    protected int caloriesPerDay = MealsUtil.DEFAULT_CALORIES_PER_DAY;
+    @Enumerated(EnumType.STRING)
+    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "role")
+    @ElementCollection(fetch = FetchType.LAZY)
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<Role> roles;
+
+    @Column(name = "calories_per_day", columnDefinition = "default 2000")
+    @Digits(fraction = 0, integer = 4)
+    private int caloriesPerDay = MealsUtil.DEFAULT_CALORIES_PER_DAY;
+
+    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY, mappedBy = "user")
+    @OrderBy("dateTime DESC")
+    protected List<Meal> meals;
 
     public User() {
     }
@@ -86,6 +125,10 @@ public class User extends NamedEntity {
 
     public String getPassword() {
         return password;
+    }
+
+    public List<Meal> getMeals() {
+        return meals;
     }
 
     @Override

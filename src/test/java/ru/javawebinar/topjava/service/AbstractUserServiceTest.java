@@ -2,14 +2,11 @@ package ru.javawebinar.topjava.service;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
-import ru.javawebinar.topjava.util.DbPopulator;
+import ru.javawebinar.topjava.repository.JpaUtil;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import java.util.Arrays;
@@ -18,24 +15,20 @@ import java.util.Collections;
 
 import static ru.javawebinar.topjava.UserTestData.*;
 
-@ContextConfiguration({
-        "classpath:spring/spring-app.xml",
-        "classpath:spring/spring-db.xml"
-})
-@RunWith(SpringJUnit4ClassRunner.class)
-public class UserServiceTest {
+public abstract class AbstractUserServiceTest extends AbstractServiceTest {
 
     @Autowired
     protected UserService service;
 
     @Autowired
-    private DbPopulator dbPopulator;
+    protected JpaUtil jpaUtil;
 
     @Before
     public void setUp() throws Exception {
-        dbPopulator.execute();
+        service.evictCache();
+        jpaUtil.clear2ndLevelHibernateCache();
     }
-
+        
     @Test
     public void testSave() throws Exception {
         User newUser = new User(null, "New", "new@gmail.com", "newPass", 1555, false, Collections.singleton(Role.ROLE_USER));

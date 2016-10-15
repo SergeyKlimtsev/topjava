@@ -9,7 +9,7 @@
 </head>
 <body>
 <section>
-    <h2><a href="index.html">Home</a></h2>
+    <h2><a href="${pageContext.request.contextPath}/">Home</a></h2>
     <h3>Meal list</h3>
     <form method="post" action="meals?action=filter">
         <dl>
@@ -43,7 +43,7 @@
             <th></th>
         </tr>
         </thead>
-        <c:forEach items="${mealList}" var="meal">
+        <c:forEach items="${meals}" var="meal">
             <jsp:useBean id="meal" scope="page" type="ru.javawebinar.topjava.to.MealWithExceed"/>
             <tr class="${meal.exceed ? 'exceeded' : 'normal'}">
                 <td>

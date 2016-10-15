@@ -11,7 +11,7 @@ import java.util.Collection;
  */
 public interface MealRepository {
     // null if updated meal do not belong to userId
-    Meal save(Meal Meal, int userId);
+    Meal save(Meal meal, int userId);
 
     // false if meal do not belong to userId
     boolean delete(int id, int userId);
@@ -24,4 +24,8 @@ public interface MealRepository {
 
     // ORDERED dateTime
     Collection<Meal> getBetween(LocalDateTime startDate, LocalDateTime endDate, int userId);
+
+    default Meal getWithUser(int id, int userId) {
+        throw new UnsupportedOperationException();
+    }
 }
