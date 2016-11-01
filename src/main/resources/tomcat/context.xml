@@ -43,7 +43,7 @@
               removeAbandoned="true" logAbandoned="true"
               driverClassName="org.postgresql.Driver"
               username="user"
-              password="password"
+              password="user"
               url="jdbc:postgresql://localhost:5432/topjava"/>
     <!--
         username="wegxlfzjjgxaxy"
