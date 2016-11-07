@@ -103,3 +103,13 @@ function renderDeleteBtn(data, type, row) {
         return '<a class="btn btn-xs btn-danger" onclick="deleteRow(' + row.id + ');">'+i18n['common.delete']+'</a>';
     }
 }
+function filterMeals() {
+    $.ajax({
+        ajax:ajaxUrl + "filter",
+        type:'GET',
+        data: $.("#filter").serialize(),
+        success: function (data) {
+            updateTableByData(data);
+        }
+    });
+}

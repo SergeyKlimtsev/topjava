@@ -1,0 +1,19 @@
+/**
+ * Created by root on 05.11.2016.
+ */
+$('#startDate').datetimepicker({
+    timepicker:false,
+    format:'d.m.Y'
+});
+$('#startTime').datetimepicker({
+    datepicker:false,
+    format:'H:i'
+});
+$('#endDate').datetimepicker({
+    timepicker:false,
+    format:'d.m.Y'
+});
+$('#endTime').datetimepicker({
+    datepicker:false,
+    format:'H:i'
+});
