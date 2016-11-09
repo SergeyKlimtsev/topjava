@@ -17,7 +17,7 @@
             <h3><fmt:message key="meals.title"/></h3>
 
             <div class="view-box">
-                <form method="post" class="form-horizontal" role="form" id="filter">
+                <form method="post" class="form-horizontal" role="form" id="filterMeals">
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="startDate"><fmt:message
                                 key="meals.startDate"/>:</label>
@@ -134,4 +134,5 @@
 <script type="text/javascript" src="resources/js/datatablesUtil.js"></script>
 <script type="text/javascript" src="resources/js/mealDatatables.js"></script>
 <script type="text/javascript" src="resources/js/datetimeUtil.js"></script>
+<script type="text/javascript" src="resources/js/filterMeals.js"></script>
 </html>

@@ -3,7 +3,7 @@
  */
 $('#startDate').datetimepicker({
     timepicker:false,
-    format:'d.m.Y'
+    format:'Y-m-d'
 });
 $('#startTime').datetimepicker({
     datepicker:false,
@@ -11,7 +11,7 @@ $('#startTime').datetimepicker({
 });
 $('#endDate').datetimepicker({
     timepicker:false,
-    format:'d.m.Y'
+    format:'Y-m-d'
 });
 $('#endTime').datetimepicker({
     datepicker:false,

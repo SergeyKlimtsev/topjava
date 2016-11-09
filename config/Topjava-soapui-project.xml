@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<con:soapui-project activeEnvironment="Default" name="Topjava" resourceRoot="" soapui-version="5.2.0" abortOnError="false" runType="SEQUENTIAL" id="b6a174fe-9cda-4410-af25-bdf04e1fed39" xmlns:con="http://eviware.com/soapui/config">
+<con:soapui-project activeEnvironment="Default" name="Topjava" resourceRoot="" soapui-version="5.2.1" abortOnError="false" runType="SEQUENTIAL" id="b6a174fe-9cda-4410-af25-bdf04e1fed39" xmlns:con="http://eviware.com/soapui/config">
     <con:settings/>
     <con:interface xsi:type="con:RestService" wadlVersion="http://wadl.dev.java.net/2009/02" name="http://localhost:8080" type="rest" id="eebe6f3c-c045-444a-ae8f-c0f4bbb345b5" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
         <con:settings/>
@@ -584,7 +584,7 @@
                 </con:request>
             </con:method>
         </con:resource>
-        <con:resource name="filter" path="/topjava/rest/profile/meals/filter" id="bdd36cb7-be1e-4806-b110-1a3001b46823">
+        <con:resource name="filter" path="/topjava/ajax/profile/meals/filter" id="bdd36cb7-be1e-4806-b110-1a3001b46823">
             <con:settings/>
             <con:parameters>
                 <con:parameter>
@@ -595,7 +595,7 @@
                     <con:description xsi:nil="true"/>
                 </con:parameter>
             <con:parameter><con:name>endTime</con:name><con:value/><con:style>QUERY</con:style><con:default/><con:description xsi:nil="true"/></con:parameter></con:parameters>
-            <con:method name="mealsGetFilter" id="cb151971-7d79-49fa-a743-d313fe138986" method="GET">
+            <con:method name="mealsGetFilter" id="cb151971-7d79-49fa-a743-d313fe138986" method="POST">
                 <con:settings/>
                 <con:parameters/>
                 <con:representation type="RESPONSE">
@@ -604,7 +604,7 @@
                     <con:params/>
                     <con:element>Response</con:element>
                 </con:representation>
-                <con:request name="MealFilter" id="0ee8475d-06f1-41a8-8a3e-d4c7631558b9" mediaType="application/json">
+                <con:representation type="RESPONSE"><con:mediaType>text/html;charset=UTF-8</con:mediaType><con:status>200</con:status><con:params/><con:element>html</con:element></con:representation><con:representation type="REQUEST"><con:mediaType>application/json</con:mediaType><con:params/></con:representation><con:request name="MealFilter" id="0ee8475d-06f1-41a8-8a3e-d4c7631558b9" mediaType="application/json" postQueryString="false">
                     <con:settings>
                         <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
                     </con:settings>
@@ -612,7 +612,7 @@
                     <con:request/>
                     <con:originalUri>http://localhost/topjava/rest/profile/meals/filter</con:originalUri>
                     <con:credentials>
-                        <con:authType>No Authorization</con:authType>
+                        <con:username>user@yandex.ru</con:username><con:password>password</con:password><con:selectedAuthProfile>NTLM</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:addedBasicAuthenticationTypes>NTLM</con:addedBasicAuthenticationTypes><con:authType>NTLM</con:authType>
                     </con:credentials>
                     <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
                     <con:jmsPropertyConfig/>
